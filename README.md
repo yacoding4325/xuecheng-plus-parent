@@ -1,6 +1,6 @@
 # xuecheng-plus-parent
 
-# 学成在线 第一章 讲义-项目开发环境搭建
+# 学成在线 讲义-项目开发环境搭建
 
 
 
@@ -8,7 +8,7 @@
 
 ## 1.1在线教育市场环境
 
-以下内容摘自https://report.iresearch.cn/content/2021/01/358854.shtml
+以下内容摘自![image](https://user-images.githubusercontent.com/82166879/216628784-360d263a-3285-4cbd-98b9-f4a1773cd3d4.png)
 
 在线教育行业是一个有着极强的广度和深度的行业，从校内到校外；从早幼教到职业培训；从教育工具到全信息化平台等等。
 
