@@ -9,6 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>xuecheng-plus-base</module>
+        <module>xuecheng-plus-content</module>
+        <module>xuecheng-plus-generator</module>
     </modules>
     <packaging>pom</packaging>
 
