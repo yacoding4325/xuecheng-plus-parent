@@ -11,6 +11,7 @@
         <module>xuecheng-plus-base</module>
         <module>xuecheng-plus-content</module>
         <module>xuecheng-plus-generator</module>
+        <module>xuecheng-plus-system</module>
     </modules>
     <packaging>pom</packaging>
 
