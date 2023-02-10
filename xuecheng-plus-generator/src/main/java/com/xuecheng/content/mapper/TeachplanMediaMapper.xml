@@ -3,7 +3,7 @@
 <mapper namespace="com.xuecheng.content.mapper.TeachplanMediaMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="TeachplanMedia">
+    <resultMap id="BaseResultMap" type="com.xuecheng.content.model.po.TeachplanMedia">
         <id column="id" property="id" />
         <result column="media_id" property="mediaId" />
         <result column="teachplan_id" property="teachplanId" />

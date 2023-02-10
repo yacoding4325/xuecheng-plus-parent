@@ -3,7 +3,7 @@
 <mapper namespace="com.xuecheng.content.mapper.TeachplanMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="Teachplan">
+    <resultMap id="BaseResultMap" type="com.xuecheng.content.model.po.Teachplan">
         <id column="id" property="id" />
         <result column="pname" property="pname" />
         <result column="parentid" property="parentid" />
