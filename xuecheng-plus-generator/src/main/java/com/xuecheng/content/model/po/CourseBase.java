@@ -1,4 +1,4 @@
-package com.xuecheng.model.po;
+package com.xuecheng.content.model.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -14,7 +14,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * 课程基本信息
  * </p>
  *
- * @author itcast
  */
 @Data
 @TableName("course_base")

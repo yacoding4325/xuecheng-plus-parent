@@ -3,7 +3,7 @@
 <mapper namespace="com.xuecheng.content.mapper.CourseTeacherMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="CourseTeacher">
+    <resultMap id="BaseResultMap" type="com.xuecheng.content.model.po.CourseTeacher">
         <id column="id" property="id" />
         <result column="course_id" property="courseId" />
         <result column="teacher_name" property="teacherName" />

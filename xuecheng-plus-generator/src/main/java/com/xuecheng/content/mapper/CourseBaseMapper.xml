@@ -3,7 +3,7 @@
 <mapper namespace="com.xuecheng.content.mapper.CourseBaseMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="CourseBase">
+    <resultMap id="BaseResultMap" type="com.xuecheng.content.model.po.CourseBase">
         <id column="id" property="id" />
         <result column="company_id" property="companyId" />
         <result column="company_name" property="companyName" />
