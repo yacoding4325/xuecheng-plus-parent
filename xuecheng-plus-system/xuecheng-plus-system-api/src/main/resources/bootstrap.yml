@@ -6,7 +6,12 @@ server:
 spring:
   application:
     name: system-service
-
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        namespace: dev148
+        group: xuecheng-plus-project
 # 日志文件配置路径
 logging:
   config: classpath:log4j2-dev.xml

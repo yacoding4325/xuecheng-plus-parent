@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.xuecheng.system</groupId>
             <artifactId>xuecheng-plus-system-model</artifactId>
             <version>1.0-SNAPSHOT</version>
