@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
+import com.xuecheng.base.model.RestResponse;
 import com.xuecheng.media.mapper.MediaFilesMapper;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
 import com.xuecheng.media.service.MediaFileService;
+import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -126,6 +129,30 @@ public class MediaFileServiceImpl implements MediaFileService {
         }
 
         return null;
+    }
+
+    @Override
+    public RestResponse<Boolean> checkFile(String fileMd5) {
+
+        //文件存在 并在文件系统中存在 此文件才存在'
+        MediaFiles mediaFiles = mediaFilesMapper.selectById(fileMd5);
+        if(mediaFiles==null){
+            return RestResponse.success(false);
+        }
+        //查看是否在文件系统存在
+        GetObjectArgs getObjectArgs = GetObjectArgs.builder().bucket(mediaFiles.getBucket()).object(mediaFiles.getFilePath()).build();
+        try {
+            InputStream inputStream = minioClient.getObject(getObjectArgs);
+            if(inputStream==null){
+                //文件不存在
+                return RestResponse.success(false);
+            }
+        }catch (Exception e){
+            //文件不存在
+            return RestResponse.success(false);
+        }
+        //文件已存在
+        return RestResponse.success(true);
     }
 
     //根据日期拼接目录

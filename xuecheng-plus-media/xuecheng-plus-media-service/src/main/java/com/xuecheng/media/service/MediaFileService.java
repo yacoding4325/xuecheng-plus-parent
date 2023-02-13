@@ -2,6 +2,7 @@ package com.xuecheng.media.service;
 
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
+import com.xuecheng.base.model.RestResponse;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
@@ -35,5 +36,12 @@ public interface MediaFileService {
   * @return com.xuecheng.media.model.dto.UploadFileResultDto
  */
  public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, byte[] bytes,String folder,String objectName);
+
+    /**
+     * @description 检查文件是否存在
+     * @param fileMd5 文件的md5
+     * @return com.xuecheng.base.model.RestResponse<java.lang.Boolean> false不存在，true存在
+     */
+    public RestResponse<Boolean> checkFile(String fileMd5);
 
 }
