@@ -13,6 +13,7 @@
         <module>xuecheng-plus-generator</module>
         <module>xuecheng-plus-system</module>
         <module>xuecheng-plus-gateway</module>
+        <module>xuecheng-plus-media</module>
     </modules>
     <packaging>pom</packaging>
 
