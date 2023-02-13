@@ -83,4 +83,12 @@ public interface MediaFileService {
      */
     @Transactional
     public MediaFiles addMediaFilesToDb(Long companyId, String fileId, UploadFileParamsDto uploadFileParamsDto, String bucket, String objectName);
+
+    /**
+     * @description 根据id查询文件信息
+     * @param id  文件id
+     * @return com.xuecheng.media.model.po.MediaFiles 文件信息
+     */
+    public MediaFiles getFileById(String id);
+
 }

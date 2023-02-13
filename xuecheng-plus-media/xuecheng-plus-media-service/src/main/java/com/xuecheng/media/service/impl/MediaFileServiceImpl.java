@@ -225,6 +225,19 @@ public class MediaFileServiceImpl implements MediaFileService {
     }
 
     @Override
+    public MediaFiles getFileById(String id) {
+        MediaFiles mediaFiles = mediaFilesMapper.selectById(id);
+        if(mediaFiles==null){
+            XueChengPlusException.cast("文件不存在");
+        }
+        String url = mediaFiles.getUrl();
+        if(StringUtils.isEmpty(url)){
+            XueChengPlusException.cast("文件还没有处理，请稍后预览");
+        }
+        return mediaFiles;
+    }
+
+    @Override
     public RestResponse<Boolean> checkFile(String fileMd5) {
 
         //在文件表存在，并且在文件系统存在，此文件才存在
