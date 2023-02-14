@@ -10,6 +10,7 @@ import com.xuecheng.media.model.po.MediaFiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -90,5 +91,10 @@ public interface MediaFileService {
      * @return com.xuecheng.media.model.po.MediaFiles 文件信息
      */
     public MediaFiles getFileById(String id);
+
+    //根据桶和文件路径从minio下载文件
+    public File downloadFileFromMinIO(File file, String bucket, String objectName);
+
+    public void addMediaFilesToMinIO(String filePath, String bucket, String objectName);
 
 }
