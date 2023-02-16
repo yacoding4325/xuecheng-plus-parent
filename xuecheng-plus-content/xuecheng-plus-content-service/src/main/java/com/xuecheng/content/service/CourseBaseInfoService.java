@@ -42,4 +42,11 @@ public interface CourseBaseInfoService {
   */
  CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto dto);
 
+ /**
+  *
+  * @param courseId
+  * @return
+  */
+ CourseBaseInfoDto getCourseBaseInfo(Long courseId);
+
 }

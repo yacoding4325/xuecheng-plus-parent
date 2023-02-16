@@ -29,4 +29,11 @@ public interface TeachplanService {
      */
     public TeachplanMedia associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto);
 
+    /**
+     *
+     * @param courseId
+     * @return
+     */
+    List<TeachplanDto> findTeachplanTree(Long courseId);
+
 }

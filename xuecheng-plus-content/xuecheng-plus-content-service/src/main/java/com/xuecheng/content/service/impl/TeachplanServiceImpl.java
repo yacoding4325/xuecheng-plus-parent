@@ -85,6 +85,11 @@ public class TeachplanServiceImpl implements TeachplanService {
         return teachplanMedia;
     }
 
+    @Override
+    public List<TeachplanDto> findTeachplanTree(Long courseId) {
+        return teachplanMapper.selectTreeNodes(courseId);
+    }
+
     //计算机新课程计划的orderby 找到同级课程计划的数量 SELECT count(1) from teachplan where course_id=117 and parentid=268
     private int getTeachplanCount(Long courseId, Long parentId) {
         LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
