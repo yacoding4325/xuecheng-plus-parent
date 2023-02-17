@@ -15,6 +15,7 @@
         <module>xuecheng-plus-gateway</module>
         <module>xuecheng-plus-media</module>
         <module>xuecheng-plus-message-sdk</module>
+        <module>xuecheng-plus-search</module>
     </modules>
     <packaging>pom</packaging>
 
