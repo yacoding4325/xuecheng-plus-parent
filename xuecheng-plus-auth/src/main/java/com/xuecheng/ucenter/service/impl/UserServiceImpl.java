@@ -30,6 +30,9 @@ public class UserServiceImpl implements UserDetailsService {
     @Autowired
     ApplicationContext applicationContext;
 
+//    @Autowired
+//    AuthService authService;
+
     //传入的是AuthParamsDto的json串
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

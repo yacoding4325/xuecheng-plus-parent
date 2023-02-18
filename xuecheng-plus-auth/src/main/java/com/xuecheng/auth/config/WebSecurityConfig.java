@@ -27,16 +27,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
     //配置用户信息服务
-    @Bean
-    public UserDetailsService userDetailsService() {
-        //这里配置用户信息,这里暂时使用这种方式将用户存储在内存中
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        //在内存创建zhangsan,密码123,分配权限p1
-        manager.createUser(User.withUsername("zhangsan").password("123").authorities("p1").build());
-        //在内存创建lisi,密码456,分配权限p2
-        manager.createUser(User.withUsername("lisi").password("456").authorities("p2").build());
-        return manager;
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        //这里配置用户信息,这里暂时使用这种方式将用户存储在内存中
+//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+//        //在内存创建zhangsan,密码123,分配权限p1
+//        manager.createUser(User.withUsername("zhangsan").password("123").authorities("p1").build());
+//        //在内存创建lisi,密码456,分配权限p2
+//        manager.createUser(User.withUsername("lisi").password("456").authorities("p2").build());
+//        return manager;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,6 +56,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().successForwardUrl("/login-success");//登录成功跳转到/login-success
         http.logout().logoutUrl("/logout");//退出地址
 
+    }
+
+    @Autowired
+    DaoAuthenticationProviderCustom daoAuthenticationProviderCustom;
+
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProviderCustom);
     }
 
 }
