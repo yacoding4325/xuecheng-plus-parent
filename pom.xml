@@ -19,7 +19,7 @@
         <module>xuecheng-plus-auth</module>
         <module>xuecheng-plus-checkcode</module>
         <module>xuecheng-plus-learning</module>
-        <module>xuecheng-plus-learning-api</module>
+        <module>xuecheng-plus-orders</module>
     </modules>
     <packaging>pom</packaging>
 
