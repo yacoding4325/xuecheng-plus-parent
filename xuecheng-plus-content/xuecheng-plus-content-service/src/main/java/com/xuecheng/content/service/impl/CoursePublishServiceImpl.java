@@ -49,6 +49,7 @@ import java.util.Map;
  */
 @Service
 @Slf4j
+@SuppressWarnings("all")
 public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Autowired
@@ -250,6 +251,12 @@ public class CoursePublishServiceImpl implements CoursePublishService {
             XueChengPlusException.cast("远程调用媒资服务上传文件失败");
         }
 
+    }
+
+    @Override
+    public CoursePublish getCoursePublish(Long courseId) {
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        return coursePublish;
     }
 
     //保存消息表
