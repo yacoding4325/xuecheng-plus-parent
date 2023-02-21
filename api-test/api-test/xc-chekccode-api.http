@@ -1,0 +1,6 @@
+### 申请验证码
+POST {{checkcode_host}}/checkcode/pic
+
+
+### 校验验证码
+POST {{checkcode_host}}/checkcode/verify?key=checkcode:f1fcbe826c9a47d7b8e90ec83aa063b2&code=wdtz

@@ -1,0 +1,85 @@
+### 课程查询
+POST {{gateway_host}}/content/course/list?pageNo=1&pageSize=10
+Content-Type: application/json
+
+{
+  "auditStatus": "",
+  "courseName": "",
+  "publishStatus": ""
+}
+
+
+### 删除
+DELETE {{content_host}}/content/coursetest/101
+
+
+### 创建课程测试
+POST {{content_host}}/content/coursetest
+Content-Type: application/json
+
+{
+  "description" : "课程描述",
+  "id" : 103,
+  "name" : "Java基础课程",
+  "phone" : "133333344",
+  "price" : 100.0,
+  "qq" : "32432",
+  "wechat" : "微信号",
+  "createdate" : "2022-10-23 08:34:05"
+}
+
+### 创建课程
+POST {{content_host}}/content/course
+Content-Type: application/json
+
+{
+
+  "mt": "1-1",
+  "st": "1-1-1",
+  "name": "",
+  "pic": "fdsfdsfds",
+  "teachmode": "200002",
+  "users": "初级人员初级人员初级人员",
+  "tags": "课程标签",
+  "grade": "204001",
+  "description": "课程描述",
+  "objectives": "objectivesobjectivesobjectives",
+  "charge": "201001",
+  "price": 100,
+  "originalPrice":200,
+  "qq": "43232",
+  "wechat": "3re",
+  "phone": "3232",
+  "validDays": 365
+}
+
+
+### 根据课程id查询课程信息
+GET {{content_host}}/content/course/40
+Content-Type: application/json
+
+
+
+### 修改课程
+PUT {{content_host}}/content/course
+Content-Type: application/json
+
+{
+  "id": 40,
+  "companyName": null,
+  "name": "SpringBoot核心222",
+  "users": "Spring Boot初学者",
+  "tags": "Spring项目的快速构建",
+  "mt": "1-3",
+  "st": "1-3-2",
+  "grade": "200003",
+  "teachmode": "201001",
+  "description": "课程系统性地深度探讨 Spring Boot 核心特性，引导小伙伴对 Java 规范的重视，启发对技术原理性的思考，掌握排查问题的技能，以及学习阅读源码的方法和技巧，全面提升研发能力，进军架构师队伍。",
+  "pic": "https://cdn.educba.com/academy/wp-content/uploads/2018/08/Spring-BOOT-Interview-questions.jpg",
+  "charge": "201001",
+  "price": 22
+}
+
+### 查询某个课程的课程计划
+GET {{content_host}}/content/teachplan/117/tree-nodes
+Content-Type: application/json
