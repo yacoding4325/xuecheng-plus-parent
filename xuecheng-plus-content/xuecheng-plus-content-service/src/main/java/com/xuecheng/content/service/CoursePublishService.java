@@ -56,4 +56,7 @@ public interface CoursePublishService {
      */
     CoursePublish getCoursePublish(Long courseId);
 
+    //查询缓存中的课程信息
+    public CoursePublish getCoursePublishCache(Long courseId);
+
 }

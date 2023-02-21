@@ -1,9 +1,14 @@
 package com.xuecheng.content.api;
 
+import com.alibaba.fastjson.JSON;
+import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.CoursePreviewDto;
+import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.model.po.CoursePublish;
 import com.xuecheng.content.service.CoursePublishService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @Author yaCoding
@@ -55,6 +62,35 @@ public class CoursePublishController {
         //查询课程发布表的信息
         CoursePublish coursePublish = coursePublishService.getCoursePublish(courseId);
         return coursePublish;
+    }
+
+    @ApiOperation("获取课程发布信息")
+    @ResponseBody
+    @GetMapping("/course/whole/{courseId}")
+    public CoursePreviewDto getCoursePublish(@PathVariable("courseId") Long courseId) {
+
+        //查询课程发布信息
+        CoursePublish coursePublish = coursePublishService.getCoursePublishCache(courseId);
+        if(coursePublish == null){
+            return new CoursePreviewDto();
+        }
+
+        //封装基本信息和营销信息
+        CourseBaseInfoDto courseBase = new CourseBaseInfoDto();
+        BeanUtils.copyProperties(coursePublish, courseBase);
+
+        //封装课程计划 ，JSON格式
+        String teacherplanJson = coursePublish.getTeachers();
+
+        //将JSON 转换成对象
+        List<TeachplanDto> teachplanDtos = JSON.parseArray(teacherplanJson,TeachplanDto.class);
+
+        //要封装的对象
+        CoursePreviewDto coursePreviewDto = new CoursePreviewDto();
+        coursePreviewDto.setTeachplans(teachplanDtos);//封装教学计划信息
+        coursePreviewDto.setCourseBase(courseBase);//封装基本信息和营销信息
+        return coursePreviewDto;
+
     }
 
 }
