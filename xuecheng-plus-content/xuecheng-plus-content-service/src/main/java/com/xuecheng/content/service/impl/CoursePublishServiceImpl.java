@@ -312,6 +312,40 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         }
     }
 
+    //    public CoursePublish getCoursePublishCache(Long courseId){
+//
+//            //先从缓存中查询
+//            String jsonString = (String) redisTemplate.opsForValue().get("course:" + courseId);
+//            if(StringUtils.isNotEmpty(jsonString)){
+////                System.out.println("========从缓存中查询===========");
+//                //将json转成对象返回
+//                CoursePublish coursePublish = JSON.parseObject(jsonString, CoursePublish.class);
+//                return coursePublish;
+//            }else{
+//                //使用setnx向redis设置一个key，谁设置成功谁拿到了锁
+//                Boolean lock001 = redisTemplate.opsForValue().setIfAbsent("lock001", "001");
+//                if(lock001){
+//                    //获取锁这个人去执行这里边的代码
+//                }
+//                synchronized (this){
+//                    //再次从缓存中查询一下
+//                    jsonString = (String) redisTemplate.opsForValue().get("course:" + courseId);
+//                    if(StringUtils.isNotEmpty(jsonString)){
+//                        //将json转成对象返回
+//                        CoursePublish coursePublish = JSON.parseObject(jsonString, CoursePublish.class);
+//                        return coursePublish;
+//                    }
+//                    System.out.println("从数据库查询...");
+//                    //如果缓存中没有，要从数据库查询
+//                    CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+//                    //将从数据库查询到的数据存入缓存
+//                    redisTemplate.opsForValue().set("course:" + courseId,JSON.toJSONString(coursePublish),300, TimeUnit.SECONDS);
+//                    return coursePublish ;
+//                }
+//            }
+//
+//    }
+
     //保存消息表
     private void saveCoursePublishMessage(Long courseId) {
         MqMessage mqMessage = mqMessageService.addMessage("course_publish", String.valueOf(courseId), null, null);
