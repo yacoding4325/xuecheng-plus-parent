@@ -346,6 +346,31 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 //
 //    }
 
+    //添加了redis缓存，解决了缓存穿透
+//    public CoursePublish getCoursePublishCache(Long courseId){
+//        //先从缓存中查询
+//        String jsonString = (String) redisTemplate.opsForValue().get("course:" + courseId);
+//        if(StringUtils.isNotEmpty(jsonString)){
+//            System.out.println("========从缓存中查询===========");
+//            if("null".equals(jsonString)){
+//                return null;
+//            }
+//            //将json转成对象返回
+//            CoursePublish coursePublish = JSON.parseObject(jsonString, CoursePublish.class);
+//            return coursePublish;
+//        }else{
+//            System.out.println("从数据库查询...");
+//            //如果缓存中没有，要从数据库查询
+//            CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+////            if(coursePublish!=null){//解决缓存穿透，查询一个不存在的数据仍然将null存入缓存
+//                //将从数据库查询到的数据存入缓存
+//                redisTemplate.opsForValue().set("course:" + courseId,JSON.toJSONString(coursePublish),300, TimeUnit.SECONDS);
+////            }
+//            return coursePublish ;
+//        }
+//
+//    }
+
     //保存消息表
     private void saveCoursePublishMessage(Long courseId) {
         MqMessage mqMessage = mqMessageService.addMessage("course_publish", String.valueOf(courseId), null, null);
