@@ -19,6 +19,9 @@ public class CheckCodeParamsDto {
      * 业务携带参数
      */
     private String param1;
+
     private String param2;
+
     private String param3;
+
 }

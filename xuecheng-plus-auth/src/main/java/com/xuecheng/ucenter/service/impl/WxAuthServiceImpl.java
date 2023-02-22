@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -64,7 +65,8 @@ public class WxAuthServiceImpl implements AuthService {
         return xcUser;
     }
 
-    private XcUser addWxUser(Map<String, String> userInfo_map) {
+    @Transactional
+    public XcUser addWxUser(Map<String, String> userInfo_map) {
         //先取出unionid
         String unionid = (String) userInfo_map.get("unionid");
         //根据unionid查询数据库
