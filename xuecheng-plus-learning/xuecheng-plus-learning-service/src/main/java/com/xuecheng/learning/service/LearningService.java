@@ -7,6 +7,7 @@ import com.xuecheng.base.model.RestResponse;
  * @create 2023-02-20 下午 8:19
  */
 
+//在线学习的service接口
 public interface LearningService {
 
 
