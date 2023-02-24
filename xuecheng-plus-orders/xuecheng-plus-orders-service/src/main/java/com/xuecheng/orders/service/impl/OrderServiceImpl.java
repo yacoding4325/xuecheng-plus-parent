@@ -51,6 +51,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     MqMessageService mqMessageService;
 
+    @Value("${pay.alipay.APP_ID}")
+    String APP_ID;
+
     @Override
     public PayRecordDto createOrder(String userId, AddOrderDto addOrderDto) {
         //创建商品订单
