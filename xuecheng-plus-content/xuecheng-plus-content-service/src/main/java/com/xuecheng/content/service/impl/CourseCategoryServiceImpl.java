@@ -15,6 +15,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class CourseCategoryServiceImpl implements CourseCategoryService {
+
     @Autowired
     CourseCategoryMapper courseCategoryMapper;
 

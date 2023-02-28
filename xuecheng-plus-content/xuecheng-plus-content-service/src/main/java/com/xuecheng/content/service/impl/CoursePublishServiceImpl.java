@@ -54,7 +54,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Slf4j
-@SuppressWarnings("all")
 public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Autowired
