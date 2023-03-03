@@ -31,6 +31,9 @@ public class MediaProcessHistory implements Serializable {
      */
     private String bucket;
 
+    /**
+     * 文件路径
+     */
     private String filePath;
 
     /**
@@ -53,6 +56,7 @@ public class MediaProcessHistory implements Serializable {
      * 媒资文件访问地址
      */
     private String url;
+
     /**
      * 失败原因
      */

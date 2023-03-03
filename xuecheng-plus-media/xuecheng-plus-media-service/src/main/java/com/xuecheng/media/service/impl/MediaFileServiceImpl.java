@@ -97,9 +97,7 @@ public class MediaFileServiceImpl implements MediaFileService {
         objectName = folder + objectName;
 
         try {
-
             addMediaFilesToMinIO(bytes, bucket_files, objectName);
-
             MediaFiles mediaFiles = currentProxy.addMediaFilesToDb(companyId, fileMd5, uploadFileParamsDto, bucket_files, objectName);
             //准备返回数据
             UploadFileResultDto uploadFileResultDto = new UploadFileResultDto();

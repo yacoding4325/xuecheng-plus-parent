@@ -58,5 +58,4 @@ public class MediaProcess implements Serializable {
      */
     private String errormsg;
 
-
 }
