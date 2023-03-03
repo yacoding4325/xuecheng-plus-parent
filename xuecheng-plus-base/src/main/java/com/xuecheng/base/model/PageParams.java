@@ -4,12 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
-/**
- * @description TODO
- * @author Mr.M
- * @date 2022/10/7 16:06
- * @version 1.0
- */
+
 @Data
 @ToString
 public class PageParams {
