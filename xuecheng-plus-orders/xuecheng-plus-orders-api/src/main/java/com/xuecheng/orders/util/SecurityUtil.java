@@ -46,9 +46,13 @@ public class SecurityUtil {
         private String salt;
 
         private String name;
+
         private String nickname;
+
         private String wxUnionid;
+
         private String companyId;
+
         /**
          * 头像
          */
@@ -74,7 +78,6 @@ public class SecurityUtil {
         private LocalDateTime createTime;
 
         private LocalDateTime updateTime;
-
 
     }
 
