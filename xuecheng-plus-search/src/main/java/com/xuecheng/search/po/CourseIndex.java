@@ -114,6 +114,7 @@ public class CourseIndex implements Serializable {
      * 现价
      */
     private Float price;
+
     /**
      * 原价
      */

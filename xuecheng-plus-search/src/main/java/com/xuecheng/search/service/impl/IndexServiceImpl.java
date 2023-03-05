@@ -34,6 +34,7 @@ public class IndexServiceImpl implements IndexService {
  @Autowired
  RestHighLevelClient client;
 
+ //添加课程索引
  @Override
  public Boolean addCourseIndex(String indexName,String id,Object object) {
   String jsonString = JSON.toJSONString(object);
@@ -55,6 +56,7 @@ public class IndexServiceImpl implements IndexService {
 
  }
 
+ //更新课程索引
  @Override
  public Boolean updateCourseIndex(String indexName,String id,Object object) {
 

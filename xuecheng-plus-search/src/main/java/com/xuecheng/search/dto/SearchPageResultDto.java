@@ -15,6 +15,7 @@ public class SearchPageResultDto<T> extends PageResult {
 
     //大分类列表
     List<String> mtList;
+
     //小分类列表
     List<String> stList;
 
