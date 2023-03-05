@@ -49,6 +49,7 @@ public class XcPayRecord implements Serializable {
      * 订单名称
      */
     private String orderName;
+
     /**
      * 订单总价单位元
      */
@@ -79,7 +80,6 @@ public class XcPayRecord implements Serializable {
      * 用户id
      */
     private String userId;
-
 
 
 }
