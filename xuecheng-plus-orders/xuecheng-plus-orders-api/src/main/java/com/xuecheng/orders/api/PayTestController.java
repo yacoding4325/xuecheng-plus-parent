@@ -118,7 +118,6 @@ public class PayTestController {
             //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
             response.getWriter().println("success");
 
-            //////////////////////////////////////////////////////////////////////////////////////////
         }else{//验证失败
             response.getWriter().println("fail");
         }

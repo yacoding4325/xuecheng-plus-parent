@@ -6,10 +6,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-/**
- * @author Administrator
- * @version 1.0
- **/
+//token的配置 类--》》 将jwt进行参数的 解析和分析
 @Configuration
 public class TokenConfig {
 
