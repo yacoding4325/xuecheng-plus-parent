@@ -1,0 +1,17 @@
+.el-dialog {
+	.el-dialog__body {
+		width: 100%;
+		// min-height: 300px;
+		border-top: 1px solid #e4e7ed;
+		border-bottom: 1px solid #e4e7ed;
+	}
+	.el-dialog__footer {
+		text-align: center;
+	}
+	.el-dialog__headerbtn {
+		top: 15px;
+		width: 32px;
+		height: 32px;
+		border: 1px dotted #e4e7ed;
+	}
+}

@@ -50,7 +50,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         LambdaQueryWrapper<CourseBase> queryWrapper = new LambdaQueryWrapper<>();
 
         //拼接查询条件
-        //根据课程名称模糊查询  name like '%名称%'
+
         queryWrapper.like(StringUtils.isNotEmpty(queryCourseParamsDto.getCourseName()),CourseBase::getName,queryCourseParamsDto.getCourseName());
 
         //根据课程审核状态
@@ -59,19 +59,16 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         //根据课程发布状态
         queryWrapper.eq(StringUtils.isNotEmpty(queryCourseParamsDto.getPublishStatus()),CourseBase::getAuditStatus,queryCourseParamsDto.getPublishStatus());
 
-
         //分页参数
         Page<CourseBase> page = new Page<>(params.getPageNo(), params.getPageSize());
 
-
-        //分页查询E page 分页参数, @Param("ew") Wrapper<T> queryWrapper 查询条件
+        //分页查询E page 分页     //根据课程名称模糊查询  name like '%名称%'参数, @Param("ew") Wrapper<T> queryWrapper 查询条件
         Page<CourseBase> pageResult = courseBaseMapper.selectPage(page, queryWrapper);
 
         //数据
         List<CourseBase> items = pageResult.getRecords();
         //总记录数
         long total = pageResult.getTotal();
-
 
         //准备返回数据 List<T> items, long counts, long page, long pageSize
         PageResult<CourseBase> courseBasePageResult = new PageResult<>(items, total, params.getPageNo(), params.getPageSize());
@@ -178,7 +175,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
         CourseCategory mtCategory = courseCategoryMapper.selectById(mt);
         CourseCategory stCategory = courseCategoryMapper.selectById(st);
-        if(mtCategory!=null){
+        if(mtCategory != null){
             //分类名称
             String mtName = mtCategory.getName();
             courseBaseInfoDto.setMtName(mtName);
@@ -189,11 +186,9 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
             courseBaseInfoDto.setStName(stName);
         }
 
-
         return courseBaseInfoDto;
 
     }
-
 
     /**
      * @description 修改课程信息
@@ -259,7 +254,6 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
             if(courseMarket.getPrice()==null || courseMarket.getPrice().floatValue()<=0){
 //                throw new RuntimeException("课程为收费价格不能为空且必须大于0");
                 XueChengPlusException.cast("课程为收费价格不能为空且必须大于0");
-
             }
         }
 
@@ -269,6 +263,5 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         return b?1:0;
 
     }
-
 
 }

@@ -1,0 +1,37 @@
+// @import 'el-button';
+
+/* Element Variables */
+
+// Override Element UI variables
+$--color-primary: #01a3fe;
+$--table-header-background-color: #ededed;
+$--table-header-font-color: #666666;
+$--table-border-color: #ededed;
+$--button-border-radius: 0;
+$--button-medium-border-radius: 0;
+$--button-default-border-color: #00a4ff;
+$--button-default-font-color: #00a4ff;
+$--tree-node-hover-background-color: #ffffff;
+
+// $--color-success: #13ce66;
+// $--color-warning: #FFBA00;
+// $--color-danger: #ff4949;
+// $--color-info: #5d5d5d;
+// $--button-font-weight: 400;
+// $--color-text-regular: #1f2d3d;
+// $--border-color-light: #dfe4ed;
+// $--border-color-lighter: #e6ebf5;
+// $--table-border:1px solid#dfe6ec;
+
+// Icon font path, required
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+// Apply overrided variables in Element UI
+@import '~element-ui/packages/theme-chalk/src/index';
+
+// 自定义 样式
+@import 'el-tabs';
+@import 'el-input';
+@import 'el-dialog';
+@import 'el-tree';
+@import 'el-messagebox';
