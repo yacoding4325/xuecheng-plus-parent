@@ -1,0 +1,35 @@
+.portal-content {
+	width: 1200px;
+	min-height: 750px;
+	margin: 0px auto;
+}
+
+.page-container {
+	padding: 20px;
+	min-height: 400px;
+	background-color: #f4f5f7;
+}
+
+.workspace {
+	margin-top: 16px;
+	width: 1200px;
+	min-height: 550px;
+	padding: 32px;
+	background-color: #ffffff;
+
+	.primary-title {
+		// width: 98px;
+		height: 33px;
+		font-size: 24px;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: rgba(51, 51, 51, 1);
+		line-height: 33px;
+	}
+}
+
+.step-body {
+	.el-scrollbar__wrap {
+		overflow-x: hidden;
+	}
+}
