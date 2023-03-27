@@ -30,7 +30,7 @@ public interface TeachplanService {
     public TeachplanMedia associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto);
 
     /**
-     *
+     * 查询到教学计划树
      * @param courseId
      * @return
      */

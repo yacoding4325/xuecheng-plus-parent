@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.util.List;
 
-/**
+/** 教学计划的 dto
  */
 @Data
 public class TeachplanDto extends Teachplan {
