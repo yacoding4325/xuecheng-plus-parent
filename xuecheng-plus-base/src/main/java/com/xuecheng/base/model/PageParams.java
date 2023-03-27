@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
+// 分页查询参数
 
 @Data
 @ToString
@@ -11,6 +12,7 @@ public class PageParams {
 
   //当前页码默认值
   public static final long DEFAULT_PAGE_CURRENT = 1L;
+
   //每页记录数默认值
   public static final long DEFAULT_PAGE_SIZE = 10L;
 
@@ -29,4 +31,5 @@ public class PageParams {
    this.pageNo = pageNo;
    this.pageSize = pageSize;
   }
+
 }
