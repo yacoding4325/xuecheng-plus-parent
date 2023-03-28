@@ -5,9 +5,13 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
 
+ */
 @Data
-//课程类别
-public class CourseCategoryTreeDto extends CourseCategory {
- List childrenTreeNodes;
+public class CourseCategoryTreeDto extends CourseCategory implements java.io.Serializable {
+
+   //子节点
+   List<CourseCategoryTreeDto> childrenTreeNodes;
+
 }
