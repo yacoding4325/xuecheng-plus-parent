@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @description 课程管理service
- * @author Mr.M
- * @date 2022/10/8 9:44
- * @version 1.0
  */
 public interface CourseBaseInfoService {
 
