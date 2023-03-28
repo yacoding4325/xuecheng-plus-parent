@@ -26,8 +26,9 @@ public class CourseCategoryController {
     @ApiOperation("课程分类查询接口")
     @GetMapping("/course-category/tree-nodes")
     public List<CourseCategoryTreeDto> queryTreeNodes(){
-        List<CourseCategoryTreeDto> courseCategoryTreeDtos = courseCategoryService.queryTreeNodes("1");
-        return courseCategoryTreeDtos;
+//        List<CourseCategoryTreeDto> courseCategoryTreeDtos = courseCategoryService.queryTreeNodes("1");
+//        return courseCategoryTreeDtos;
+        return courseCategoryService.queryTreeNodes("1");
     }
 
 }

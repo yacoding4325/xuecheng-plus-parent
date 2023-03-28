@@ -17,11 +17,11 @@ public interface CourseBaseInfoService {
 
  /**
   * @description 课程查询
-  * @param params 分页参数
+  * @param pageParams 分页参数
   * @param queryCourseParamsDto 查询条件
   * @return com.xuecheng.base.model.PageResult<com.xuecheng.content.model.po.CourseBase>
  */
-  public PageResult<CourseBase>  queryCourseBaseList(PageParams params, QueryCourseParamsDto queryCourseParamsDto);
+  public PageResult<CourseBase>  queryCourseBaseList(Long companyId, PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
 
  /**
   * 新增课程

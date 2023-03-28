@@ -8,7 +8,6 @@ import com.xuecheng.content.model.po.TeachplanMedia;
  *  Mapper 接口
  * </p>
  *
-
  */
 public interface TeachplanMediaMapper extends BaseMapper<TeachplanMedia> {
 

@@ -7,7 +7,7 @@ import com.xuecheng.content.model.po.TeachplanMedia;
 
 import java.util.List;
 
-
+//课程计划管理相关接口
 /**
  * @Author yaCoding
  * @create 2023-02-10 下午 1:52
