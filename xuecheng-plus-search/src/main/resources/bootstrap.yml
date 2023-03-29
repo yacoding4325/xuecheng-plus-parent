@@ -5,10 +5,10 @@ spring:
     nacos:
       server-addr: localhost:8848
       discovery:
-        namespace: dev148
+        namespace: dev402
         group: xuecheng-plus-project
       config:
-        namespace: dev148
+        namespace: dev402
         group: xuecheng-plus-project
         file-extension: yaml
         refresh-enabled: true
