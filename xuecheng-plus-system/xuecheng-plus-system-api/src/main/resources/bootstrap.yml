@@ -5,12 +5,17 @@ server:
 #微服务配置
 spring:
   application:
-    name: system-service
+    name: system-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/xcplus_system?serverTimezone=UTC&userUnicode=true&useSSL=false&
+    username: root
+    password: yxym
   cloud:
     nacos:
-      server-addr: localhost:8848
+      server-addr: 192.168.101.65:8848
       discovery:
-        namespace: dev148
+        namespace: dev402
         group: xuecheng-plus-project
 # 日志文件配置路径
 logging:
@@ -18,8 +23,8 @@ logging:
 
 # swagger 文档配置
 swagger:
-  title: "学成在线内容管理系统"
-  description: "内容系统管理系统对课程相关信息进行业务管理数据"
-  base-package: com.xuecheng.content
+  title: "学成在线系统管理"
+  description: "系统管理接口"
+  base-package: com.xuecheng.system
   enabled: true
   version: 1.0.0
