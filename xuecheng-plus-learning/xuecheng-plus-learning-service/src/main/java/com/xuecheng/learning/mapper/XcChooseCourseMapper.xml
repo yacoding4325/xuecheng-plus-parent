@@ -12,7 +12,6 @@
         <result column="order_type" property="orderType" />
         <result column="create_date" property="createDate" />
         <result column="valid_days" property="validDays" />
-<!--        <result column="price" property="price" />-->
         <result column="status" property="status" />
         <result column="validtime_start" property="validtimeStart" />
         <result column="validtime_end" property="validtimeEnd" />
@@ -21,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, course_id, course_name, user_id, company_id, order_type, create_date, valid_days,price, status, validtime_start, validtime_end, remarks
+        id, course_id, course_name, user_id, company_id, order_type, create_date, valid_days, status, validtime_start, validtime_end, remarks
     </sql>
 
 </mapper>
