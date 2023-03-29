@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
  * @create 2023-02-18 下午 1:19
  */
 
+//重写了DaoAuthenticationProvider的校验的密码的方法，因为我们统一认证入口，有一些认证方式不需要校验密码
 @Slf4j
 @Component
 public class DaoAuthenticationProviderCustom extends DaoAuthenticationProvider {

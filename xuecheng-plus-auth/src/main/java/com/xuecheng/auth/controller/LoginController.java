@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @description 测试controller
-
  */
+
 @Slf4j
 @RestController
 public class LoginController {
@@ -32,13 +32,13 @@ public class LoginController {
     }
 
     @RequestMapping("/r/r1")
-    @PreAuthorize("hasAuthority('p1')")
+    @PreAuthorize("hasAuthority('p1')")//拥有p1权限方可访问
     public String r1() {
         return "访问r1资源";
     }
 
     @RequestMapping("/r/r2")
-    @PreAuthorize("hasAuthority('p2')")
+    @PreAuthorize("hasAuthority('p2')")//拥有p2权限方可访问
     public String r2() {
         return "访问r2资源";
     }
