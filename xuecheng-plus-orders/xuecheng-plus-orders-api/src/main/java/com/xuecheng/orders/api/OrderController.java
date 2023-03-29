@@ -21,18 +21,22 @@ import org.apache.logging.log4j.core.config.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
- * @Author yaCoding
- * @create 2023-02-20 下午 12:25
+ * @description 订单相关的接口
+
  */
 @Api(value = "订单支付接口", tags = "订单支付接口")
 @Slf4j
@@ -44,7 +48,6 @@ public class OrderController {
 
     @Value("${pay.alipay.APP_ID}")
     String APP_ID;
-
     @Value("${pay.alipay.APP_PRIVATE_KEY}")
     String APP_PRIVATE_KEY;
 
@@ -55,47 +58,68 @@ public class OrderController {
     @PostMapping("/generatepaycode")
     @ResponseBody
     public PayRecordDto generatePayCode(@RequestBody AddOrderDto addOrderDto) {
-        //登录用户
+
         SecurityUtil.XcUser user = SecurityUtil.getUser();
-        //用户id
         String userId = user.getId();
-        return orderService.createOrder(userId,addOrderDto);
+
+        //调用service，完成插入订单信息、插入支付记录、生成支付二维码
+        PayRecordDto payRecordDto = orderService.createOrder(userId, addOrderDto);
+
+        return payRecordDto;
     }
 
     @ApiOperation("扫码下单接口")
     @GetMapping("/requestpay")
     public void requestpay(String payNo, HttpServletResponse httpResponse) throws IOException, AlipayApiException {
-        //校验payNo支付记录交易号是否存在
-        XcPayRecord payRecord = orderService.getPayRecordByPayno(payNo);
-        if(payRecord==null){
-            XueChengPlusException.cast("支付记录交易号不存在");
+
+        //传入了支付记录号，判断支付记录号是否存在
+        XcPayRecord payRecordByPayno = orderService.getPayRecordByPayno(payNo);
+        if(payRecordByPayno == null){
+            XueChengPlusException.cast("支付记录不存在");
         }
-        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, APP_ID, APP_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);//获得初始化的AlipayClient
+        //支付结果
+        String status = payRecordByPayno.getStatus();
+        if ("601002".equals(status)) {
+
+            XueChengPlusException.cast("已支付，无需重复支付");
+        }
+
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, APP_ID, APP_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
         AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
 //        alipayRequest.setReturnUrl("http://domain.com/CallBack/return_url.jsp");
-        //告诉支付宝支付结果通知的地址
-        alipayRequest.setNotifyUrl("http://tjxt-user-t.itheima.net/xuecheng/orders/receivenotify");//在公共参数中设置回跳和通知地址
-        //填充业务参数
+        alipayRequest.setNotifyUrl("http://tjxt-user-t.itheima.net/xuecheng/orders/paynotify");//在公共参数中设置回跳和通知地址
         alipayRequest.setBizContent("{" +
-                "    \"out_trade_no\":\""+payRecord.getPayNo()+"\"," +//商户网站唯一订单号，本项目指定支付记录的交易号
-                "    \"total_amount\":"+payRecord.getTotalPrice()+"," +
-                "    \"subject\":\""+payRecord.getOrderName()+"\"," +
+                "    \"out_trade_no\":\""+payNo+"\"," +
+                "    \"total_amount\":"+payRecordByPayno.getTotalPrice()+"," +
+                "    \"subject\":\""+payRecordByPayno.getOrderName()+"\"," +
                 "    \"product_code\":\"QUICK_WAP_WAY\"" +
-                "  }");
-        String form = client.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
+                "  }");//填充业务参数
+        String form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK请求支付宝下单
         httpResponse.setContentType("text/html;charset=" + AlipayConfig.CHARSET);
         httpResponse.getWriter().write(form);//直接将完整的表单html输出到页面
         httpResponse.getWriter().flush();
+
+
     }
 
-    //接收支付宝支付结果通知
-    @RequestMapping("/receivenotify")
-    public void receivenotify(HttpServletRequest request, HttpServletResponse response) throws AlipayApiException, IOException {
+    @ApiOperation("查询支付结果")
+    @GetMapping("/payresult")
+    @ResponseBody
+    public PayRecordDto payresult(String payNo) throws IOException {
+        //查询支付结果
+        PayRecordDto payRecordDto = orderService.queryPayResult(payNo);
+        return payRecordDto;
+
+    }
+
+    //接收支付宝通知
+    @PostMapping("/paynotify")
+    public void paynotify(HttpServletRequest request, HttpServletResponse response) throws IOException, AlipayApiException {
 
         //获取支付宝POST过来反馈信息
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String,String> params = new HashMap<String,String>();
         Map requestParams = request.getParameterMap();
-        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
             String name = (String) iter.next();
             String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
@@ -103,50 +127,34 @@ public class OrderController {
                 valueStr = (i == values.length - 1) ? valueStr + values[i]
                         : valueStr + values[i] + ",";
             }
-            //乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-            //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "gbk");
             params.put(name, valueStr);
         }
-        //验签名
         boolean verify_result = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, "RSA2");
 
-        if (verify_result) {//验证成功
+        if(verify_result){//验证成功
             //商户订单号
-            String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"), "UTF-8");
+            String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
             //支付宝交易号
-            String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"), "UTF-8");
+            String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
+            //交易金额
+            String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
             //交易状态
-            String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"), "UTF-8");
-            //支付宝通过我们的appid
-            String appid = new String(request.getParameter("app_id").getBytes("ISO-8859-1"), "UTF-8");
-            //总金额
-            String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"), "UTF-8");
-
-            if (trade_status.equals("TRADE_SUCCESS")) {
-                System.out.println("================支付成功==================");
-                //更新订单表的状态
-                //封装一个
+            String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
+            if (trade_status.equals("TRADE_SUCCESS")){
+                //更新支付记录表的支付状态为成功，订单表的状态为成功
                 PayStatusDto payStatusDto = new PayStatusDto();
-                //支付宝通过我们的appid
-                payStatusDto.setApp_id(appid);
-                //支付结果
                 payStatusDto.setTrade_status(trade_status);
-                //商户自己的订单号
-                payStatusDto.setOut_trade_no(out_trade_no);
-                //总金额
-                payStatusDto.setTotal_amount(total_amount);
-                //支付宝自己的订单
                 payStatusDto.setTrade_no(trade_no);
-
+                payStatusDto.setOut_trade_no(out_trade_no);
+                payStatusDto.setTotal_amount(total_amount);
+                payStatusDto.setApp_id(APP_ID);
                 orderService.saveAliPayStatus(payStatusDto);
-
             }
 
-            //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
-            response.getWriter().println("success");
+            response.getWriter().write("success");
 
-        } else {//验证失败
-            response.getWriter().println("fail");
+        }else{//验证失败
+            response.getWriter().write("fail");
         }
     }
 }
