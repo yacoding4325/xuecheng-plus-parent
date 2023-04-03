@@ -1,9 +1,0 @@
-{
-  "spaceBeforeFunctionParen": true,
-  "tabWidth": 2,
-  "useTabs": false,
-  "trailingComma": "none",
-  "eslintIntegration": true,
-  "singleQuote": true,
-  "semi": false
-}
