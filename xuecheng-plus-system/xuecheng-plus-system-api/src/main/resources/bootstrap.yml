@@ -13,7 +13,7 @@ spring:
     password: yxym
   cloud:
     nacos:
-      server-addr: 192.168.101.65:8848
+      server-addr: localhost:8848
       discovery:
         namespace: dev402
         group: xuecheng-plus-project
