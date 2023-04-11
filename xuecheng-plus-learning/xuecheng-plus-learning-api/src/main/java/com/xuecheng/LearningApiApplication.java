@@ -15,10 +15,4 @@ public class LearningApiApplication {
         SpringApplication.run(LearningApiApplication.class, args);
     }
 
-    @Bean
-    public RestTemplate getRestTemplate(){
-        return new RestTemplate(new OkHttp3ClientHttpRequestFactory());
-    }
-
-
 }
