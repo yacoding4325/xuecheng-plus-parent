@@ -13,11 +13,15 @@ import org.apache.commons.lang.StringUtils;
 public abstract class AbstractCheckCodeService implements CheckCodeService {
 
     protected CheckCodeGenerator checkCodeGenerator;
+
     protected KeyGenerator keyGenerator;
+
     protected CheckCodeStore checkCodeStore;
 
     public abstract void  setCheckCodeGenerator(CheckCodeGenerator checkCodeGenerator);
+
     public abstract void  setKeyGenerator(KeyGenerator keyGenerator);
+
     public abstract void  setCheckCodeStore(CheckCodeStore CheckCodeStore);
 
 
@@ -28,8 +32,6 @@ public abstract class AbstractCheckCodeService implements CheckCodeService {
      * @param keyPrefix key的前缀
      * @param expire 过期时间
      * @return com.xuecheng.checkcode.service.AbstractCheckCodeService.GenerateResult 生成结果
-     * @author Mr.M
-     * @date 2022/9/30 6:07
     */
     public GenerateResult generate(CheckCodeParamsDto checkCodeParamsDto,Integer code_length,String keyPrefix,Integer expire){
         //生成四位验证码
@@ -37,7 +39,6 @@ public abstract class AbstractCheckCodeService implements CheckCodeService {
         log.debug("生成验证码:{}",code);
         //生成一个key
         String key = keyGenerator.generate(keyPrefix);
-
         //存储验证码
         checkCodeStore.set(key,code,expire);
         //返回验证码生成结果
