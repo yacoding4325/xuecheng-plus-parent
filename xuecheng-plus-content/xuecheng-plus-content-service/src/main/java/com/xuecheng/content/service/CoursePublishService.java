@@ -9,7 +9,7 @@ import java.io.File;
  * @Author yaCoding
  * @create 2023-02-16 上午 10:56
  */
-
+//课程出版接口
 public interface CoursePublishService {
 
     /**

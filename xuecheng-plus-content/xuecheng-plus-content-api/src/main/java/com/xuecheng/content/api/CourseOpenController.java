@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/open")
 public class CourseOpenController {
 
+    //基于课程的信息服务
     @Autowired
     private CourseBaseInfoService courseBaseInfoService;
 
     @Autowired
     private CoursePublishService coursePublishService;
-
 
     @GetMapping("/course/whole/{courseId}")
     public CoursePreviewDto getPreviewInfo(@PathVariable("courseId") Long courseId) {
