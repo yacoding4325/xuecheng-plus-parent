@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,71 +33,64 @@ public class TeachplanServiceImpl implements TeachplanService {
     @Autowired
     TeachplanMediaMapper teachplanMediaMapper;
 
+    //新增/修改/保存课程计划
     @Override
-    public List<TeachplanDto> findTeachplayTree(Long courseId) {
-        return teachplanMapper.selectTreeNodes(courseId);
+    public List<TeachplanDto> findTeachplanTree(Long courseId) {
+        List<TeachplanDto> teachplanDtos = teachplanMapper.selectTreeNodes(courseId);
+        return teachplanDtos;
     }
 
+    private int getTeachplanCount(Long courseId,Long parentId){
+        LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper = queryWrapper.eq(Teachplan::getCourseId, courseId).eq(Teachplan::getParentid, parentId);
+        Integer count = teachplanMapper.selectCount(queryWrapper);
+        return  count+1;
+    }
+
+    //新增/修改/保存课程计划
     @Override
-    public void saveTeachplan(SaveTeachplanDto dto) {
-        Long id = dto.getId();
-        Teachplan teachplan = teachplanMapper.selectById(id);
-        if (teachplan == null) {
-            teachplan = new Teachplan();
-            BeanUtils.copyProperties(dto,teachplan);
-            //找到同级课程计划的数量
-            int count = getTeachplanCount(dto.getCourseId(), dto.getParentid());
-            //新课程计划的值
-            teachplan.setOrderby(count+1);
+    public void saveTeachplan(SaveTeachplanDto saveTeachplanDto) {
+        //通过课程计划id判断是新增和修改
+        Long teachplanId = saveTeachplanDto.getId();
+        if(teachplanId ==null){
+            //新增
+            Teachplan teachplan = new Teachplan();
+            BeanUtils.copyProperties(saveTeachplanDto,teachplan);
+            //确定排序字段，找到它的同级节点个数，排序字段就是个数加1  select count(1) from teachplan where course_id=117 and parentid=268
+            Long parentid = saveTeachplanDto.getParentid();
+            Long courseId = saveTeachplanDto.getCourseId();
+            int teachplanCount = getTeachplanCount(courseId, parentid);
+            teachplan.setOrderby(teachplanCount);
             teachplanMapper.insert(teachplan);
-        } else  {
-            BeanUtils.copyProperties(dto,teachplan);
-            //更新
+        }else{
+            //修改
+            Teachplan teachplan = teachplanMapper.selectById(teachplanId);
+            //将参数复制到teachplan
+            BeanUtils.copyProperties(saveTeachplanDto,teachplan);
             teachplanMapper.updateById(teachplan);
         }
     }
 
+    @Transactional
     @Override
-    public TeachplanMedia associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto) {
-        //教学计划id
+    public void associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto) {
+        //课程计划id
         Long teachplanId = bindTeachplanMediaDto.getTeachplanId();
         Teachplan teachplan = teachplanMapper.selectById(teachplanId);
-        if(teachplan==null){
-            XueChengPlusException.cast("教学计划不存在");
+        if(teachplan == null){
+            XueChengPlusException.cast("课程计划不存在");
         }
-        Integer grade = teachplan.getGrade();
-        if(grade!=2){
-            XueChengPlusException.cast("只允许第二级教学计划绑定媒资文件");
-        }
-        //课程id
-        Long courseId = teachplan.getCourseId();
 
-        //先删除原来该教学计划绑定的媒资
-        teachplanMediaMapper.delete(new LambdaQueryWrapper<TeachplanMedia>().eq(TeachplanMedia::getTeachplanId,teachplanId));
+        //先删除原有记录,根据课程计划id删除它所绑定的媒资
+        int delete = teachplanMediaMapper.delete(new LambdaQueryWrapper<TeachplanMedia>().eq(TeachplanMedia::getTeachplanId, bindTeachplanMediaDto.getTeachplanId()));
 
-        //再添加教学计划与媒资的绑定关系
+        //再添加新记录
         TeachplanMedia teachplanMedia = new TeachplanMedia();
-        teachplanMedia.setCourseId(courseId);
-        teachplanMedia.setTeachplanId(teachplanId);
+        BeanUtils.copyProperties(bindTeachplanMediaDto,teachplanMedia);
+        teachplanMedia.setCourseId(teachplan.getCourseId());
         teachplanMedia.setMediaFilename(bindTeachplanMediaDto.getFileName());
-        teachplanMedia.setMediaId(bindTeachplanMediaDto.getMediaId());
-        teachplanMedia.setCreateDate(LocalDateTime.now());
         teachplanMediaMapper.insert(teachplanMedia);
-        return teachplanMedia;
-    }
 
-    @Override
-    public List<TeachplanDto> findTeachplanTree(Long courseId) {
-        return teachplanMapper.selectTreeNodes(courseId);
-    }
-
-    //计算机新课程计划的orderby 找到同级课程计划的数量 SELECT count(1) from teachplan where course_id=117 and parentid=268
-    private int getTeachplanCount(Long courseId, Long parentId) {
-        LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Teachplan::getCourseId,courseId);
-        queryWrapper.eq(Teachplan::getParentid,parentId);
-        Integer count = teachplanMapper.selectCount(queryWrapper);
-        return count.intValue();
     }
 
 }

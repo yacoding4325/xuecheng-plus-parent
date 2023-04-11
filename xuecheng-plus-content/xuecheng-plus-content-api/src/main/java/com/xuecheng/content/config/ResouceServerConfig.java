@@ -37,7 +37,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
   http.csrf().disable()
           .authorizeRequests()
 //                .antMatchers("/r/**","/course/**").authenticated()//所有/r/**的请求必须认证通过
-          .anyRequest().permitAll();
+          .anyRequest().permitAll()
+  ;
  }
 
  }

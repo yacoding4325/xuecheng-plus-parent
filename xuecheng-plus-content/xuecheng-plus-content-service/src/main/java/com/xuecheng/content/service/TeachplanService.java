@@ -15,25 +15,25 @@ import java.util.List;
 
 public interface TeachplanService {
 
-    List<TeachplanDto> findTeachplayTree(Long courseId);
     /**
-     * 保存课程计划(新增/修改)
-     * @param dto
+     * 根据课程id查询课程计划
+     * @param courseId 课程计划
+     * @return
      */
-    void saveTeachplan(SaveTeachplanDto dto);
+    public List<TeachplanDto> findTeachplanTree(Long courseId);
+
+    /**
+     * 新增/修改/保存课程计划
+     * @param saveTeachplanDto
+     */
+    public void saveTeachplan(SaveTeachplanDto saveTeachplanDto);
+
 
     /**
      * @description 教学计划绑定媒资
      * @param bindTeachplanMediaDto
      * @return com.xuecheng.content.model.po.TeachplanMedia
      */
-    public TeachplanMedia associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto);
-
-    /**
-     * 查询到教学计划树
-     * @param courseId
-     * @return
-     */
-    List<TeachplanDto> findTeachplanTree(Long courseId);
+    public void associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto);
 
 }
