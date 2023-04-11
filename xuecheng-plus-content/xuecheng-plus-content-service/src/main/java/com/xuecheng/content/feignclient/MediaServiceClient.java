@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 /***/
-@FeignClient(value = "media-api",configuration = MultipartSupportConfig.class,fallbackFactory = MediaServiceClientFallbackFactory.class)
-@RequestMapping("/media")
+//使用fallback定义降级类是无法拿到熔断异常,使用FallbackFactory可以拿到熔断的异常信息
+@FeignClient(value = "media-api",configuration = {MultipartSupportConfig.class},fallbackFactory = MediaServiceClientFallbackFactory.class)
 public interface MediaServiceClient {
 
- @RequestMapping(value = "/upload/coursefile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
- public String upload(@RequestPart("filedata") MultipartFile filedata,
-                                   @RequestParam(value = "folder",required=false) String folder,
-                                   @RequestParam(value= "objectName",required=false) String objectName) ;
+    @RequestMapping(value = "/media/upload/coursefile",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String upload(@RequestPart("filedata") MultipartFile filedata,
+                         @RequestParam(value= "objectName",required=false) String objectName) throws IOException;
 
- }
+}
