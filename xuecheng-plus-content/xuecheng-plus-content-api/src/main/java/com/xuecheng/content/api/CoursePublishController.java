@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-/**
+/** 课程发布相关接口
  * @Author yaCoding
  * @create 2023-02-16 上午 10:55
  */
@@ -29,17 +29,47 @@ public class CoursePublishController {
     @Autowired
     CoursePublishService coursePublishService;
 
+    @ApiOperation("获取课程发布信息")
+    @ResponseBody
+    @GetMapping("/course/whole/{courseId}")
+    public CoursePreviewDto getCoursePublish(@PathVariable("courseId") Long courseId) {
+        //封装数据
+        CoursePreviewDto coursePreviewDto = new CoursePreviewDto();
+
+        //查询课程发布表
+//        CoursePublish coursePublish = coursePublishService.getCoursePublish(courseId);
+        //先从缓存查询，缓存中有直接返回，没有再查询数据库
+        CoursePublish coursePublish = coursePublishService.getCoursePublishCache(courseId);
+        if(coursePublish == null){
+            return coursePreviewDto;
+        }
+        //开始向coursePreviewDto填充数据
+        CourseBaseInfoDto courseBaseInfoDto = new CourseBaseInfoDto();
+        BeanUtils.copyProperties(coursePublish,courseBaseInfoDto);
+        //课程计划信息
+        String teachplanJson = coursePublish.getTeachplan();
+        //转成List<TeachplanDto>
+        List<TeachplanDto> teachplanDtos = JSON.parseArray(teachplanJson, TeachplanDto.class);
+        coursePreviewDto.setCourseBase(courseBaseInfoDto);
+        coursePreviewDto.setTeachplans(teachplanDtos);
+        return coursePreviewDto;
+
+    }
+
+
     @GetMapping("/coursepreview/{courseId}")
     public ModelAndView preview(@PathVariable("courseId") Long courseId) {
-        //查询数据
-        CoursePreviewDto coursePreviewInfo = coursePublishService.getCoursePreviewInfo(courseId);
+
         ModelAndView modelAndView = new ModelAndView();
+        //查询课程的信息作为模型数据
+        CoursePreviewDto coursePreviewInfo = coursePublishService.getCoursePreviewInfo(courseId);
+        //指定模型
         modelAndView.addObject("model", coursePreviewInfo);
-        modelAndView.setViewName("course_template");
+        //指定模板
+        modelAndView.setViewName("course_template");//根据视图名称加.ftl找到模板
         return modelAndView;
     }
 
-    //提交审核
     @ResponseBody
     @PostMapping("/courseaudit/commit/{courseId}")
     public void commitAudit(@PathVariable("courseId") Long courseId) {
@@ -49,8 +79,8 @@ public class CoursePublishController {
 
     @ApiOperation("课程发布")
     @ResponseBody
-    @PostMapping("/coursepublish/{courseId}")
-    public void coursepublish(@PathVariable("courseId") Long courseId) {
+    @PostMapping ("/coursepublish/{courseId}")
+    public void coursepublish(@PathVariable("courseId") Long courseId){
         Long companyId = 1232141425L;
         coursePublishService.publish(companyId,courseId);
     }
@@ -59,38 +89,9 @@ public class CoursePublishController {
     @ResponseBody
     @GetMapping("/r/coursepublish/{courseId}")
     public CoursePublish getCoursepublish(@PathVariable("courseId") Long courseId) {
-        //查询课程发布表的信息
+        //查询课程发布信息
         CoursePublish coursePublish = coursePublishService.getCoursePublish(courseId);
         return coursePublish;
-    }
-
-    @ApiOperation("获取课程发布信息")
-    @ResponseBody
-    @GetMapping("/course/whole/{courseId}")
-    public CoursePreviewDto getCoursePublish(@PathVariable("courseId") Long courseId) {
-
-        //查询课程发布信息
-        CoursePublish coursePublish = coursePublishService.getCoursePublishCache(courseId);
-        if(coursePublish == null){
-            return new CoursePreviewDto();
-        }
-
-        //封装基本信息和营销信息
-        CourseBaseInfoDto courseBase = new CourseBaseInfoDto();
-        BeanUtils.copyProperties(coursePublish, courseBase);
-
-        //封装课程计划 ，JSON格式
-        String teacherplanJson = coursePublish.getTeachers();
-
-        //将JSON 转换成对象
-        List<TeachplanDto> teachplanDtos = JSON.parseArray(teacherplanJson,TeachplanDto.class);
-
-        //要封装的对象
-        CoursePreviewDto coursePreviewDto = new CoursePreviewDto();
-        coursePreviewDto.setTeachplans(teachplanDtos);//封装教学计划信息
-        coursePreviewDto.setCourseBase(courseBase);//封装基本信息和营销信息
-        return coursePreviewDto;
-
     }
 
 }

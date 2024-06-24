@@ -18,26 +18,38 @@ import java.util.List;
  */
 public interface MediaFileService {
 
-     /**
-      * @description 媒资文件查询方法
-      * @param pageParams 分页参数
-      * @param queryMediaParamsDto 查询条件
-      * @return com.xuecheng.base.model.PageResult<com.xuecheng.media.model.po.MediaFiles>
+    //根据媒资id查询文件信息
+    MediaFiles getFileById(String mediaId);
 
+    /**
+     * @description 媒资文件查询方法
+     * @param pageParams 分页参数
+     * @param queryMediaParamsDto 查询条件
+     * @return com.xuecheng.base.model.PageResult<com.xuecheng.media.model.po.MediaFiles>
      */
-     public PageResult<MediaFiles> queryMediaFiels(Long companyId,PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto);
+    public PageResult<MediaFiles> queryMediaFiels(Long companyId,PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto);
 
-
-     /**
-      * @description 上传文件的通用接口
-      * @param companyId  机构id
-      * @param uploadFileParamsDto  文件信息
-      * @param bytes  文件字节数组
-      * @param folder 桶下边的子目录
-      * @param objectName 对象名称
-      * @return com.xuecheng.media.model.dto.UploadFileResultDto
+    /**
+     * 上传文件
+     * @param companyId 机构id
+     * @param uploadFileParamsDto 文件信息
+     * @param localFilePath 文件本地路径
+     * @param objectname 如果传入objectname要按objectname的目录去存储，如果不传就按年月日目录结构去存储
+     * @return UploadFileResultDto
      */
-    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, byte[] bytes,String folder,String objectName);
+    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath,String objectname);
+
+    public MediaFiles addMediaFilesToDb(Long companyId,String fileMd5,UploadFileParamsDto uploadFileParamsDto,String bucket,String objectName);
+
+    /**
+     * 将文件上传到minio
+     * @param localFilePath 文件本地路径
+     * @param mimeType 媒体类型
+     * @param bucket 桶
+     * @param objectName 对象名
+     * @return
+     */
+    public boolean addMediaFilesToMinIO(String localFilePath,String mimeType,String bucket, String objectName);
 
     /**
      * @description 检查文件是否存在
@@ -58,10 +70,11 @@ public interface MediaFileService {
      * @description 上传分块
      * @param fileMd5  文件md5
      * @param chunk  分块序号
-     * @param bytes  文件字节
+     * @param localChunkFilePath  分块文件本地路径
      * @return com.xuecheng.base.model.RestResponse
      */
-    public RestResponse uploadChunk(String fileMd5,int chunk,byte[] bytes);
+    public RestResponse uploadChunk(String fileMd5,int chunk,String localChunkFilePath);
+
 
     /**
      * @description 合并分块
@@ -74,27 +87,10 @@ public interface MediaFileService {
     public RestResponse mergechunks(Long companyId,String fileMd5,int chunkTotal,UploadFileParamsDto uploadFileParamsDto);
 
     /**
-     * @param companyId
-     * @param fileId
-     * @param uploadFileParamsDto
-     * @param bucket
-     * @param objectName
-     * @return com.xuecheng.media.model.po.MediaFiles
-     * @description 将文件信息入库
+     * 从minio下载文件
+     * @param bucket 桶
+     * @param objectName 对象名称
+     * @return 下载后的文件
      */
-    @Transactional
-    public MediaFiles addMediaFilesToDb(Long companyId, String fileId, UploadFileParamsDto uploadFileParamsDto, String bucket, String objectName);
-
-    /**
-     * @description 根据id查询文件信息
-     * @param id  文件id
-     * @return com.xuecheng.media.model.po.MediaFiles 文件信息
-     */
-    public MediaFiles getFileById(String id);
-
-    //根据桶和文件路径从minio下载文件
-    public File downloadFileFromMinIO(File file, String bucket, String objectName);
-
-    public void addMediaFilesToMinIO(String filePath, String bucket, String objectName);
-
+    public File downloadFileFromMinIO(String bucket, String objectName);
 }

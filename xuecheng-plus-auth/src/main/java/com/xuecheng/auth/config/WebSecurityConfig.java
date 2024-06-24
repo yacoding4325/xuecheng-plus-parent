@@ -41,8 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
 //        //密码为明文方式
-        return NoOpPasswordEncoder.getInstance();
-//        return new BCryptPasswordEncoder();
+//        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
     //配置安全拦截机制
@@ -54,8 +54,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()//其它请求全部放行
                 .and()
                 .formLogin().successForwardUrl("/login-success");//登录成功跳转到/login-success
-        http.logout().logoutUrl("/logout");//退出地址
+//        http.logout().logoutUrl("/logout");//退出地址
 
+    }
+
+    public static void main(String[] args) {
+        String password = "111111";
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        for (int i = 0; i < 5; i++) {
+            //生成密码
+            String encode = passwordEncoder.encode(password);
+            System.out.println(encode);
+            //校验密码 参数1是输入的明文 参数2是正确密码 加密后的串
+            boolean matches = passwordEncoder.matches(password,encode);
+            System.out.println(matches);
+        }
     }
 
     @Autowired

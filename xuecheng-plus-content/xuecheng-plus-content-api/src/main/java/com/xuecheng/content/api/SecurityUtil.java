@@ -1,4 +1,4 @@
-package com.xuecheng.content.util;
+package com.xuecheng.content.api;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Data;

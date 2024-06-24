@@ -9,7 +9,7 @@ import java.io.File;
  * @Author yaCoding
  * @create 2023-02-16 上午 10:56
  */
-
+//课程出版接口
 public interface CoursePublishService {
 
     /**
@@ -56,7 +56,11 @@ public interface CoursePublishService {
      */
     CoursePublish getCoursePublish(Long courseId);
 
-    //查询缓存中的课程信息
+    /**
+     * 查询缓存中的课程信息
+     * @param courseId
+     * @return
+     */
     public CoursePublish getCoursePublishCache(Long courseId);
 
 }

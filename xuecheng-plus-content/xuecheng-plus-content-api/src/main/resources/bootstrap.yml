@@ -1,16 +1,19 @@
-
+#server:
+#  servlet:
+#    context-path: /content
+#  port: 63041
 #微服务配置
 spring:
   application:
-    name: content-api
+    name: content-api #服务名content-api-dev.yaml
   cloud:
     nacos:
       server-addr: localhost:8848
-      discovery:
-        namespace: dev148
+      discovery: #服务注册相关配置
+        namespace: dev402
         group: xuecheng-plus-project
-      config:
-        namespace: dev148
+      config: #配置文件相关配置
+        namespace: dev402
         group: xuecheng-plus-project
         file-extension: yaml
         refresh-enabled: true
@@ -25,24 +28,33 @@ spring:
           - data-id: logging-${spring.profiles.active}.yaml
             group: xuecheng-plus-common
             refresh: true
-  #profiles默认为dev
+          - data-id: freemarker-config-dev.yaml
+            group: xuecheng-plus-common
+            refresh: true
+          - data-id: feign-${spring.profiles.active}.yaml
+            group: xuecheng-plus-common
+            refresh: true  #profiles默认为dev
+          - data-id: redis-${spring.profiles.active}.yaml
+            group: xuecheng-plus-common
+            refresh: true
+
+
+  #  datasource:
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    url: jdbc:mysql://192.168.101.65:3306/xc402_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
+  #    username: root
+  #    password: mysql
+
   profiles:
-    active: dev
+    active: dev   #环境名
 
-test_config:
-  a: 4a
-  b: 4b
-  c: 4c
-  d: 4d
-# 日志文件配置路径
 #logging:
-#  config: classpath:log4j2-dev.xml
+#  config: classpath:log4j2-dev.xml  # 日志文件配置路径
 
 
-# swagger 文档配置
 #swagger:
 #  title: "学成在线内容管理系统"
-#  description: "内容系统管理系统对课程相关信息进行业务管理数据"
-#  base-package: com.xuecheng
+#  description: "内容系统管理系统对课程相关信息进行管理"
+#  base-package: com.xuecheng.content
 #  enabled: true
 #  version: 1.0.0

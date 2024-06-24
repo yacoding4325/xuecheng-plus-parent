@@ -39,6 +39,13 @@ public class MediaFileProcessServiceImpl implements MediaFileProcessService {
         return mediaProcessMapper.selectListByShardIndex(shardTotal, shardIndex, count);
     }
 
+    //开始一个任务
+    @Override
+    public boolean startTask(long id) {
+        int result = mediaProcessMapper.startTask(id);
+        return result<=0?false:true;
+    }
+
     @Transactional
     @Override
     public void saveProcessFinishStatus(Long taskId, String status, String fileId, String url, String errorMsg) {

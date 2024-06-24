@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
  * @Author yaCoding
  * @create 2023-02-18 下午 12:30
  */
-//账号密码认证
-@Slf4j
+//账号名密码认证
 @Service("password_authservice")
 public class PasswordAuthServiceImpl implements AuthService {
 

@@ -5,10 +5,10 @@ spring:
     nacos:
       server-addr: localhost:8848
       discovery:
-        namespace: dev148
+        namespace: dev402
         group: xuecheng-plus-project
       config:
-        namespace: dev148
+        namespace: dev402
         group: xuecheng-plus-project
         file-extension: yaml
         refresh-enabled: true
@@ -17,6 +17,9 @@ spring:
             group: xuecheng-plus-common
             refresh: true
           - data-id: logging-${spring.profiles.active}.yaml
+            group: xuecheng-plus-common
+            refresh: true
+          - data-id: feign-${spring.profiles.active}.yaml
             group: xuecheng-plus-common
             refresh: true
 

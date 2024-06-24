@@ -10,7 +10,6 @@ import java.util.concurrent.*;
 
 /**
  * @description 消息处理抽象类
- * @date 2022/9/21 19:44
  */
 @Slf4j
 @Data
@@ -71,9 +70,10 @@ public abstract class MessageProcessAbstract {
                     } catch (Exception e) {
                         e.printStackTrace();
                         log.debug("任务出现异常:{},任务:{}",e.getMessage(),message);
+                    }finally {
+                        //计数
+                        countDownLatch.countDown();
                     }
-                    //计数
-                    countDownLatch.countDown();
                     log.debug("结束任务:{}",message);
 
                 });

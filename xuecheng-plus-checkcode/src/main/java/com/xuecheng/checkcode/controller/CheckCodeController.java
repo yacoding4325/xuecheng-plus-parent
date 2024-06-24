@@ -37,6 +37,7 @@ public class CheckCodeController {
             @ApiImplicitParam(name = "code", value = "验证码", required = true, dataType = "String", paramType="query")
     })
 
+    //验证 key和code 的合法性
     @PostMapping(value = "/verify")
     public Boolean verify(String key, String code){
         Boolean isSuccess = picCheckCodeService.verify(key,code);

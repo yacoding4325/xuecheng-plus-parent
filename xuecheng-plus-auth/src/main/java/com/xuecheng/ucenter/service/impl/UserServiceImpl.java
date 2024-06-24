@@ -31,7 +31,7 @@ import java.util.List;
 public class UserServiceImpl implements UserDetailsService {
 
     @Autowired
-    XcUserMapper userMapper;
+    XcUserMapper xcUserMapper;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -40,11 +40,12 @@ public class UserServiceImpl implements UserDetailsService {
 //    AuthService authService;
 
     @Autowired
-    XcMenuMapper menuMapper;
+    XcMenuMapper xcMenuMapper;
 
-    //传入的是AuthParamsDto的json串
+    //传入的请求认证的参数就是AuthParamsDto
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        //将传入的json转成AuthParamsDto对象
         AuthParamsDto authParamsDto = null;
         try {
             //将认证参数转为AuthParamsDto类型
@@ -53,45 +54,53 @@ public class UserServiceImpl implements UserDetailsService {
             log.info("认证请求不符合项目要求:{}",s);
             throw new RuntimeException("认证请求数据格式不对");
         }
-        //认证方式
+        //认证方式  认证类型，有password，wx。。。
         String authType = authParamsDto.getAuthType();
-        //从spring容器中拿具体的认证bean实例
-        AuthService authService = applicationContext.getBean(authType + "_authservice", AuthService.class);
-        //开始认证,认证成功拿到用户信息
-        XcUserExt xcUserExt = authService.execute(authParamsDto);
+//        //从spring容器中拿具体的认证bean实例
+//        AuthService authService = applicationContext.getBean(authType + "_authservice", AuthService.class);
+//        //开始认证,认证成功拿到用户信息
+//        XcUserExt xcUserExt = authService.execute(authParamsDto);
+//
+//        return getUserPrincipal(xcUserExt);
 
-        return getUserPrincipal(xcUserExt);
+        //根据认证类型从spring容器取出指定的bean
+        String beanName = authType+"_authservice";
+        AuthService authService = applicationContext.getBean(beanName,AuthService.class);
+        //调用统一execute方法完成认证
+        XcUserExt xcUserExt = authService.execute(authParamsDto);
+        //封装xcUserExt用户信息为UserDetails
+        //根据UserDetails对象生成令牌
+        UserDetails userPrincipal = getUserPrincipal(xcUserExt);
+        return userPrincipal;
+
     }
 
     //根据XcUserExt对象构造一个UserDetails对象
     /**
      * @description 查询用户信息
-     * @param user  用户id，主键
+     * @param xcUser  用户id，主键
      * @return com.xuecheng.ucenter.model.po.XcUser 用户信息
-     * @author Mr.M
-     * @date 2022/9/29 12:19
      */
-    private UserDetails getUserPrincipal(XcUserExt user) {
-
-        //权限列表 ，存放的用户权限
-        List<String> permissionList = new ArrayList<>();
-
-        //根据用户id查询数据库中他的权限
-        List<XcMenu> xcMenus = menuMapper.selectPermissionByUserId(user.getId());
-        xcMenus.forEach(menu -> {
-            permissionList.add(menu.getCode());
-        });
-        if (permissionList.size() == 0) {
-            //用户权限,如果不加报Cannot pass a null GrantedAuthority collection
-            permissionList.add("test");
+    public UserDetails getUserPrincipal(XcUserExt xcUser){
+        String password = xcUser.getPassword();
+        //权限
+        String[] authorities=  {"test"};
+        //根据用户id查询用户的权限
+        List<XcMenu> xcMenus = xcMenuMapper.selectPermissionByUserId(xcUser.getId());
+        if(xcMenus.size()>0){
+            List<String> permissions = new ArrayList<>();
+            xcMenus.forEach(m->{
+                //拿到了用户拥有的权限标识符
+                permissions.add(m.getCode());
+            });
+            //将permissions转成数组
+            authorities = permissions.toArray(new String[0]);
         }
-
-        String[] authorities= permissionList.toArray(new String[0]);
-        //原来存的是账号，现在扩展为用户的全部信息(密码不要放)
-        user.setPassword(null);
-        String jsonString = JSON.toJSONString(user);
-        UserDetails userDetails = User.withUsername(jsonString).password("").authorities(authorities).build();
-        return userDetails;
+        xcUser.setPassword(null);
+        //将用户信息转json
+        String userJson = JSON.toJSONString(xcUser);
+        UserDetails userDetails = User.withUsername(userJson).password(password).authorities(authorities).build();
+        return  userDetails;
     }
 
 }

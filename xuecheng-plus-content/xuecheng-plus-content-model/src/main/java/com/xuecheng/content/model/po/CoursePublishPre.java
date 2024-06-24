@@ -150,4 +150,5 @@ public class CoursePublishPre implements Serializable {
      */
     private Integer validDays;
 
+
 }

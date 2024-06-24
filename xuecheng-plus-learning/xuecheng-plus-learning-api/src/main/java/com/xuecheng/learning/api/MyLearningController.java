@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @Author yaCoding
- * @create 2023-02-20 下午 8:17
+ * @description 我的学习接口
  */
-
 @Api(value = "学习过程管理接口", tags = "学习过程管理接口")
 @Slf4j
 @RestController
@@ -24,17 +22,26 @@ public class MyLearningController {
     @Autowired
     LearningService learningService;
 
+    /**
+     *
+     * @param courseId 课程id
+     * @param teachplanId 课程计划id
+     * @param mediaId 媒资文件id
+     * @return
+     */
     @ApiOperation("获取视频")
     @GetMapping("/open/learn/getvideo/{courseId}/{teachplanId}/{mediaId}")
-    public RestResponse<String> getvideo(@PathVariable("courseId") Long courseId, @PathVariable("courseId") Long teachplanId, @PathVariable("mediaId") String mediaId) {
-        //登录用户
+    public RestResponse<String> getvideo(@PathVariable("courseId") Long courseId, @PathVariable("teachplanId") Long teachplanId, @PathVariable("mediaId") String mediaId) {
+
         SecurityUtil.XcUser user = SecurityUtil.getUser();
-        String userId = null;
-        if(user != null){
-            userId = user.getId();
-        }
+
+        String userId = user.getId();
+
         //获取视频
-        return learningService.getVideo(userId,courseId,teachplanId,mediaId);
+        RestResponse<String> restResponse = learningService.getVideo(userId, courseId, teachplanId, mediaId);
+
+        return restResponse;
+
     }
 
 }

@@ -27,20 +27,20 @@ public interface MyCourseTablesService {
    * @param courseId
    * @return XcCourseTablesDto 学习资格状态 [{"code":"702001","desc":"正常学习"},{"code":"702002","desc":"没有选课或选课后没有支付"},{"code":"702003","desc":"已过期需要申请续期或重新支付"}]
    */
-  public XcCourseTablesDto getLeanringStatus(String userId, Long courseId);
+   XcCourseTablesDto getLearningStatus(String userId, Long courseId);
 
   /**
-   * @description 添加我的课程表
-   * @param xcChooseCourse
-   * @return com.xuecheng.learning.model.po.XcCourseTables
-   */
-  public XcCourseTables addCourseTabls(XcChooseCourse xcChooseCourse);
-
-
-  /**
-   * 我的课程表
-   * @param params
+   * 保存选课成功状态
+   * @param chooseCourseId
    * @return
    */
-  public PageResult<XcCourseTables> mycourestabls(MyCourseTableParams params);
+  public boolean saveChooseCourseSuccess(String chooseCourseId);
+
+  /**
+   * @description 我的课程表
+   * @param params
+   * @return com.xuecheng.base.model.PageResult<com.xuecheng.learning.model.po.XcCourseTables>
+   */
+  public PageResult<XcCourseTables> mycoursetables(MyCourseTableParams params);
+
 }

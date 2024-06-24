@@ -1,14 +1,14 @@
 package com.xuecheng.content.model.dto;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
- * @author Mr.M
- * @version 1.0
- * @description TODO
- * @date 2022/10/7 16:08
+ * @description 课程查询条件模型类
+
  */
 @Data
+@ToString
 public class QueryCourseParamsDto {
 
     //审核状态
@@ -17,4 +17,5 @@ public class QueryCourseParamsDto {
     private String courseName;
     //发布状态
     private String publishStatus;
+
 }

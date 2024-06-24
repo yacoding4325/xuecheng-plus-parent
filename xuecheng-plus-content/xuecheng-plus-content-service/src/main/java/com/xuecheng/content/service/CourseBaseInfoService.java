@@ -11,20 +11,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @description 课程管理service
- * @author Mr.M
- * @date 2022/10/8 9:44
- * @version 1.0
  */
 public interface CourseBaseInfoService {
 
 
  /**
   * @description 课程查询
-  * @param params 分页参数
+  * @param pageParams 分页参数
   * @param queryCourseParamsDto 查询条件
   * @return com.xuecheng.base.model.PageResult<com.xuecheng.content.model.po.CourseBase>
  */
-  public PageResult<CourseBase>  queryCourseBaseList(PageParams params, QueryCourseParamsDto queryCourseParamsDto);
+  public PageResult<CourseBase>  queryCourseBaseList(Long companyId, PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
 
  /**
   * 新增课程
@@ -43,7 +40,7 @@ public interface CourseBaseInfoService {
  CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto dto);
 
  /**
-  *
+  * 获取课程基本信息
   * @param courseId
   * @return
   */
